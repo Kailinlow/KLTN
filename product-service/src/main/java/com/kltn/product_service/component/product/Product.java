@@ -2,6 +2,7 @@ package com.kltn.product_service.component.product;
 
 import com.kltn.product_service.component.brand.Brand;
 import com.kltn.product_service.component.categoryItem.CategoryItem;
+import com.kltn.product_service.component.productAttributes.ProductAttributes;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
@@ -53,20 +54,6 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<CategoryItem> categoryItemList;
 
-
-    @CreatedDate
-    @Column(name = "created_at", updatable = false, nullable = false)
-    private Instant createdAt;
-
-    @LastModifiedDate
-    @Column(name = "updated_at", nullable = false)
-    private Instant updatedAt;
-
-    @CreatedBy
-    @Column(name = "created_by", updatable = false)
-    private Long createdBy;
-
-    @LastModifiedBy
-    @Column(name = "updated_by")
-    private Long updatedBy;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<ProductAttributes> productAttributesList;
 }

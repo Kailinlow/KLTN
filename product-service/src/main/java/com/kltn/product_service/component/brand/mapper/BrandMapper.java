@@ -2,13 +2,13 @@ package com.kltn.product_service.component.brand.mapper;
 
 import com.kltn.product_service.component.brand.Brand;
 import com.kltn.product_service.component.brand.dto.request.BrandRequest;
-import org.mapstruct.BeanMapping;
+import com.kltn.product_service.component.brand.dto.response.BrandResponse;
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring")
 public interface BrandMapper {
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateBrandFromDto(BrandRequest request, @MappingTarget Brand brand);
+//    @Mapping(target = )
+    Brand toBrand(BrandRequest request);
+
+    BrandResponse toBrandResponse(Brand brand);
 }
