@@ -2,6 +2,7 @@ package com.kltn.product_service.component.product;
 
 import com.kltn.product_service.component.brand.Brand;
 import com.kltn.product_service.component.categoryItem.CategoryItem;
+import com.kltn.product_service.component.entity.BaseEntity;
 import com.kltn.product_service.component.productAttributes.ProductAttributes;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "product")
-public class Product {
+public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;

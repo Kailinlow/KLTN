@@ -29,6 +29,7 @@ public class ProductService {
                 .orElseThrow(() -> new RuntimeException("Brand is not existed"));
 
         Product product = productMapper.toProduct(request);
+        product.setBrand(existingBrand);
 
         productRepository.save(product);
 

@@ -10,10 +10,6 @@ public record ProductResponse(
         String id,
         Instant createdAt,
         Instant updatedAt,
-        @Nullable
-        String createdBy,
-        @Nullable
-        String updatedBy,
         String name,
         String imageUrl,
         String description,
