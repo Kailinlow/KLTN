@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,5 +29,15 @@ public class ProductService {
         List<Product> productList = productRepository.findAll();
 
         return productMapper.toResponses(productList);
+    }
+
+    public ProductResponse findById(String id) {
+        Optional<Product> productOptional = productRepository.findById(id);
+
+        if (productOptional.isEmpty()) {
+            throw new RuntimeException("Product isn't existed");
+        }
+
+        return productMapper.toProductResponse(productOptional.get());
     }
 }

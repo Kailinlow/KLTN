@@ -33,7 +33,7 @@ public class CategoryService {
         Optional<Category> categoryOptional = repository.findById(id);
 
         if (categoryOptional.isEmpty()) {
-            throw new RuntimeException("Category not existed");
+            throw new RuntimeException("Category is not existed");
         }
 
         return mapper.toCategoryResponse(categoryOptional.get());
