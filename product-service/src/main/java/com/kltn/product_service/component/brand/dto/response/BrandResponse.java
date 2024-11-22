@@ -2,10 +2,14 @@ package com.kltn.product_service.component.brand.dto.response;
 
 import lombok.Builder;
 
+import java.time.LocalDateTime;
+
 @Builder
 public record BrandResponse(
         String id,
         String name,
-        String information
+        String information,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
 ) {
 }

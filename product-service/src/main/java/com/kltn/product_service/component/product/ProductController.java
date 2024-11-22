@@ -1,6 +1,7 @@
 package com.kltn.product_service.component.product;
 
 import com.kltn.product_service.component.product.dto.request.CreateProductRequest;
+import com.kltn.product_service.component.product.dto.request.UpdateProductRequest;
 import com.kltn.product_service.component.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,5 +26,10 @@ public class ProductController {
     @GetMapping("{id}")
     public ResponseEntity<?> findById(@PathVariable String id) {
         return ResponseEntity.ok(productService.findById(id));
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<?> update(@RequestBody UpdateProductRequest request, String id) {
+        return ResponseEntity.ok(productService.updateProduct(request, id));
     }
 }
