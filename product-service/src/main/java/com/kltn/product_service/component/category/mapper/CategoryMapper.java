@@ -11,9 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {
     Category toCategory(CategoryRequest request);
-
     CategoryResponse toCategoryResponse(Category category);
-
     List<CategoryResponse> categoriesToResponses(List<Category> categories);
 
     void updateCategoryFromRequest(CategoryRequest request, @MappingTarget Category category);

@@ -35,11 +35,9 @@ public class ProductService {
         Optional<Product> productOptional = productRepository.findById(id);
 
         if (productOptional.isEmpty()) {
-            throw new RuntimeException("Product is not existed");
+            throw new RuntimeException("Product isn't existed");
         }
 
         return productMapper.toProductResponse(productOptional.get());
     }
-
-
 }
