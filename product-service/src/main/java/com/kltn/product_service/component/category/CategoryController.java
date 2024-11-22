@@ -26,4 +26,8 @@ public class CategoryController {
         return ResponseEntity.ok(service.findById(id));
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity<?> update(@RequestBody CategoryRequest request, @PathVariable String id) {
+        return ResponseEntity.ok(service.update(request, id));
+    }
 }

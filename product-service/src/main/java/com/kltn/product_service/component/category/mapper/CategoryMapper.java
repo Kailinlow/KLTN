@@ -4,6 +4,8 @@ import com.kltn.product_service.component.category.Category;
 import com.kltn.product_service.component.category.dto.request.CategoryRequest;
 import com.kltn.product_service.component.category.dto.response.CategoryResponse;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -13,4 +15,6 @@ public interface CategoryMapper {
     CategoryResponse toCategoryResponse(Category category);
 
     List<CategoryResponse> categoriesToResponses(List<Category> categories);
+
+    void updateCategoryFromRequest(CategoryRequest request, @MappingTarget Category category);
 }

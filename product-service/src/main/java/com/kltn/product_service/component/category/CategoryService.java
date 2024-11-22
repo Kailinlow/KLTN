@@ -1,5 +1,7 @@
 package com.kltn.product_service.component.category;
 
+import com.kltn.product_service.component.brand.Brand;
+import com.kltn.product_service.component.brand.dto.request.BrandRequest;
 import com.kltn.product_service.component.category.dto.request.CategoryRequest;
 import com.kltn.product_service.component.category.dto.response.CategoryResponse;
 import com.kltn.product_service.component.category.mapper.CategoryMapper;
@@ -38,4 +40,17 @@ public class CategoryService {
 
         return mapper.toCategoryResponse(categoryOptional.get());
     }
+
+    public CategoryResponse update(CategoryRequest request, String id) {
+        Category existingCategory = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Brand not found"));
+
+        mapper.updateCategoryFromRequest(request, existingCategory);
+
+        Category updatedCategory = repository.save(existingCategory);
+
+        return mapper.toCategoryResponse(updatedCategory);
+    }
+
+
 }
