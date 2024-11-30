@@ -25,4 +25,11 @@ public class BrandController {
     public ResponseEntity<?> findById(@PathVariable String id) {
         return ResponseEntity.ok(service.findById(id));
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity<?> update(@RequestBody BrandRequest request, @PathVariable String id) {
+        return ResponseEntity.ok((service.update(request, id)));
+    }
+
+
 }
