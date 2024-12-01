@@ -27,25 +27,25 @@ public class Product extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
 
     @Column(name = "image_url")
     private String imageUrl;
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "cost", nullable = false)
+    @Column(name = "cost")
     private BigDecimal cost;
 
-    @Column(name = "price", nullable = false)
+    @Column(name = "price")
     private BigDecimal price;
 
-    @Column(name = "marketPrice", nullable = false)
+    @Column(name = "marketPrice")
     private BigDecimal marketPrice;
 
-    @Column(name = "stock_quantity", nullable = false)
+    @Column(name = "stock_quantity")
     private Long stockQuantity;
 
     @ManyToOne(fetch = FetchType.LAZY)

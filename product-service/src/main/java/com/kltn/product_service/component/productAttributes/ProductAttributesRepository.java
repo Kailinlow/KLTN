@@ -1,4 +1,6 @@
 package com.kltn.product_service.component.productAttributes;
 
-public interface ProductAttributesRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProductAttributesRepository extends JpaRepository<ProductAttributes, String> {
 }

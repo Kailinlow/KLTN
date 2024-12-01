@@ -23,7 +23,7 @@ public class Brand extends BaseEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "information")
+    @Column(name = "information", nullable = false)
     private String information;
 
     @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)

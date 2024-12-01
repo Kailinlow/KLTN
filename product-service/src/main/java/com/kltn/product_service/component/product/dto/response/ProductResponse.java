@@ -1,15 +1,18 @@
 package com.kltn.product_service.component.product.dto.response;
 
 
-import org.springframework.lang.Nullable;
+import com.kltn.product_service.component.productAttributes.dto.response.ProductAttributesResponse;
+import lombok.Builder;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.List;
 
+@Builder
 public record ProductResponse(
         String id,
-        Instant createdAt,
-        Instant updatedAt,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt,
         String name,
         String imageUrl,
         String description,
@@ -17,11 +20,13 @@ public record ProductResponse(
         BigDecimal price,
         BigDecimal marketPrice,
         Long stockQuantity,
-        BrandResponse brand
+        BrandResponse brand,
+        List<ProductAttributesResponse> attributeResponseList
 ) {
     public record BrandResponse(
         String id,
         String name,
         String information
     ){}
+
 }
