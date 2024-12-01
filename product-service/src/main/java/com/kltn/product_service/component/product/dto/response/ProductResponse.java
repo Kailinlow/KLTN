@@ -20,8 +20,7 @@ public record ProductResponse(
         BigDecimal price,
         BigDecimal marketPrice,
         Long stockQuantity,
-        BrandResponse brand,
-        List<ProductAttributesResponse> attributeResponseList
+        BrandResponse brand
 ) {
     public record BrandResponse(
         String id,
