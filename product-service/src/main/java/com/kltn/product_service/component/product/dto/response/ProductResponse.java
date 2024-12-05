@@ -14,6 +14,7 @@ public record ProductResponse(
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
         String name,
+        String sku,
         String imageUrl,
         String description,
         BigDecimal cost,

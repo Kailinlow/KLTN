@@ -32,4 +32,9 @@ public class ProductController {
     public ResponseEntity<?> update(@RequestBody UpdateProductRequest request, String id) {
         return ResponseEntity.ok(productService.updateProduct(request, id));
     }
+
+    @GetMapping("/short/{id}")
+    public ResponseEntity<?> getShortInformation(@PathVariable String id) {
+        return ResponseEntity.ok(productService.getShortInformation(id));
+    }
 }

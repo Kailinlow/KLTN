@@ -31,6 +31,8 @@ public class Product extends BaseEntity {
     @Column(name = "name")
     private String name;
 
+    private String sku;
+
     @Column(name = "image_url")
     private String imageUrl;
 

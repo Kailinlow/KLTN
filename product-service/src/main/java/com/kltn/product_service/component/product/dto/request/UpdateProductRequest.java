@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 public record UpdateProductRequest(
         String name,
+        String sku,
         String imageUrl,
         String description,
         BigDecimal cost,

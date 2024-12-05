@@ -8,6 +8,7 @@ import com.kltn.product_service.component.product.dto.request.CreateProductReque
 import com.kltn.product_service.component.product.dto.request.UpdateProductRequest;
 import com.kltn.product_service.component.product.dto.response.ProductInfoResponse;
 import com.kltn.product_service.component.product.dto.response.ProductResponse;
+import com.kltn.product_service.component.product.dto.response.ProductShortResponse;
 import com.kltn.product_service.component.product.mapper.ProductMapper;
 import com.kltn.product_service.component.productAttributes.ProductAttributes;
 import com.kltn.product_service.component.productAttributes.dto.response.ProductAttributesResponse;
@@ -66,6 +67,13 @@ public class ProductService {
         Product updatedProduct = productRepository.save(existingProduct);
 
         return mapper.toProductResponse(updatedProduct);
+    }
+
+    public ProductShortResponse getShortInformation(String id) {
+        Product existingProduct = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not existed."));
+
+        return mapper.toProductShortResponse(existingProduct);
     }
 
     private ProductInfoResponse toResponse(Product product) {

@@ -5,6 +5,7 @@ import com.kltn.product_service.component.product.dto.request.CreateProductReque
 import com.kltn.product_service.component.product.dto.request.UpdateProductRequest;
 import com.kltn.product_service.component.product.dto.response.ProductInfoResponse;
 import com.kltn.product_service.component.product.dto.response.ProductResponse;
+import com.kltn.product_service.component.product.dto.response.ProductShortResponse;
 import com.kltn.product_service.component.productAttributes.dto.response.ProductAttributesResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -18,6 +19,8 @@ public interface ProductMapper {
     ProductResponse toProductResponse(Product product);
     ProductInfoResponse toProductInfoResponse(Product product);
     List<ProductResponse> toResponses(List<Product> products);
+
+    ProductShortResponse toProductShortResponse(Product product);
 
     void updateProductFromRequest(UpdateProductRequest request, @MappingTarget Product product);
 

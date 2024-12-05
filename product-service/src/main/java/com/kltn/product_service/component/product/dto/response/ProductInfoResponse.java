@@ -14,6 +14,7 @@ import java.util.List;
 public class ProductInfoResponse {
     private String id;
     private String name;
+    private String sku;
     private String imageUrl;
     private String description;
     private BigDecimal cost;
