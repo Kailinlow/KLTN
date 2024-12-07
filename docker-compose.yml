@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  spring-boot-app:
+    image: toan511/product-service
+    container_name: spring-boot-app
+    working_dir: /app
+    volumes:
+      - ./product-service/target/product-service-0.0.1-SNAPSHOT.jar:/app/product-service-0.0.1-SNAPSHOT.jar
+    ports:
+      - "8080:8080"
+    environment:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/product-service
+          SPRING_DATASOURCE_USERNAME: postgres
+          SPRING_DATASOURCE_PASSWORD: 1234
+    depends_on:
+      - db
+    command: ["java", "-jar", "product-service-0.0.1-SNAPSHOT.jar"]
+
+  db:
+    image: postgres:latest
+    container_name: db
+    environment:
+          POSTGRES_DB: product-service
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 1234
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
