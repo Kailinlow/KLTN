@@ -22,8 +22,11 @@ public class PromotionController {
     }
 
     @GetMapping
-    public ResponseEntity<?> findAll() {
-        return ResponseEntity.ok(service.findAll());
+    public ResponseEntity<?> findAll(
+            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(value = "size", required = false, defaultValue = "10") int size
+    ) {
+        return ResponseEntity.ok(service.findAll(page, size));
     }
 
     @GetMapping("{id}")

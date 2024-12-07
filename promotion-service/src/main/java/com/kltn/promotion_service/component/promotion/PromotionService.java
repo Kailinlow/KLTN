@@ -7,7 +7,11 @@ import com.kltn.promotion_service.component.promotion.dto.request.CreatePromotio
 import com.kltn.promotion_service.component.promotion.dto.request.UpdatePromotionRequest;
 import com.kltn.promotion_service.component.promotion.dto.response.PromotionResponse;
 import com.kltn.promotion_service.component.promotion.mapper.PromotionMapper;
+import com.kltn.promotion_service.dto.response.PageResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,10 +50,19 @@ public class PromotionService {
         return mapper.toPromotionResponse(existingPromotion);
     }
 
-    public List<PromotionResponse> findAll() {
+    public PageResponse<PromotionResponse> findAll(int page, int size) {
         List<Promotion> promotionList = repository.findAll();
 
-        return mapper.toPromotionResponseList(promotionList);
+        Pageable pageable = PageRequest.of(page - 1, size);
+        var pageData = repository.findAll(pageable);
+
+        return PageResponse.<PromotionResponse>builder()
+                .currentPage(page)
+                .pageSize(pageData.getSize())
+                .totalPages(pageData.getTotalPages())
+                .totalElements(pageData.getTotalElements())
+                .data(pageData.getContent().stream().map(mapper::toPromotionResponse).toList())
+                .build();
     }
 
     public PromotionResponse update(UpdatePromotionRequest request, String id) {

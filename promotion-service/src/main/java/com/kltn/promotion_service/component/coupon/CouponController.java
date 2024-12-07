@@ -27,13 +27,19 @@ public class CouponController {
     }
 
     @GetMapping
-    public ResponseEntity<?> findAll() {
-        return ResponseEntity.ok(service.findAll());
+    public ResponseEntity<?> findAll(
+            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(value = "size", required = false, defaultValue = "10") int size
+    ) {
+        return ResponseEntity.ok(service.findAll(page, size));
     }
 
     @GetMapping("/promotion/{id}")
-    public ResponseEntity<?> findByPromotionById(@PathVariable String id) {
-        return ResponseEntity.ok(service.findByPromotionId(id));
+    public ResponseEntity<?> findByPromotionById(@PathVariable String id,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+    @RequestParam(value = "size", required = false, defaultValue = "10") int size
+    ) {
+        return ResponseEntity.ok(service.findByPromotionId(id, page, size));
     }
 
     @GetMapping("/code")

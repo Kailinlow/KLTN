@@ -5,10 +5,12 @@ import com.kltn.promotion_service.component.coupon.dto.response.CouponResponse;
 import com.kltn.promotion_service.component.coupon.mapper.CouponMapper;
 import com.kltn.promotion_service.component.promotion.Promotion;
 import com.kltn.promotion_service.component.promotion.PromotionRepository;
+import com.kltn.promotion_service.dto.response.PageResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,16 +39,32 @@ public class CouponService {
         return mapper.toCouponResponse(exisitingCoupon);
     }
 
-    public List<CouponResponse> findAll() {
-        List<Coupon> couponList = repository.findAll();
+    public PageResponse<CouponResponse> findAll(int page, int size) {
+        Sort sort = Sort.by("createdDate").descending();
+        Pageable pageable = PageRequest.of(page - 1, size, sort);
+        var pageData = repository.findAll(pageable);
 
-        return mapper.toCouponResponseList(couponList);
+        return PageResponse.<CouponResponse>builder()
+                .currentPage(page)
+                .pageSize(pageData.getSize())
+                .totalPages(pageData.getTotalPages())
+                .totalElements(pageData.getTotalElements())
+                .data(pageData.getContent().stream().map(mapper::toCouponResponse).toList())
+                .build();
     }
 
-    public List<CouponResponse> findByPromotionId(String id) {
-        List<Coupon> couponList = repository.findByPromotionId(id);
+    public PageResponse<CouponResponse> findByPromotionId(String id, int page, int size) {
+        Sort sort = Sort.by("createdDate").descending();
+        Pageable pageable = PageRequest.of(page - 1, size, sort);
+        var pageData = repository.findByPromotionId(id, pageable);
 
-        return mapper.toCouponResponseList(couponList);
+        return PageResponse.<CouponResponse>builder()
+                .currentPage(page)
+                .pageSize(pageData.getSize())
+                .totalPages(pageData.getTotalPages())
+                .totalElements(pageData.getTotalElements())
+                .data(pageData.getContent().stream().map(mapper::toCouponResponse).toList())
+                .build();
     }
 
     public CouponResponse findByCode(String code) {
