@@ -2,6 +2,7 @@ package com.kltn.product_service.component.review;
 
 import com.kltn.product_service.component.review.dto.request.ReviewRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +18,14 @@ public class ReviewController {
     }
 
     @PostMapping
-    private ResponseEntity<?> create(@RequestBody ReviewRequest request) {
+    public ResponseEntity<?> create(@RequestBody ReviewRequest request) {
         return ResponseEntity.ok(service.create(request));
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> delete(@PathVariable String id) {
+        service.delete(id);
+        return new ResponseEntity<>("Review " + " has been deleted successfully.", HttpStatus.OK);
     }
 
 }

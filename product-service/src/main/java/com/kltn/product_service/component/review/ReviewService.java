@@ -37,4 +37,11 @@ public class ReviewService {
 
         return reviewResponse;
     }
+
+    public void delete(String id) {
+        Review review = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Review not existing."));
+
+        repository.delete(review);
+    }
 }

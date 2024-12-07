@@ -28,7 +28,10 @@ public class JwtService {
     private long refreshExpiration;
 
     public String extractUsername(String token) {
-        return null;
+        if (token == null || token.isEmpty()) {
+            throw new IllegalArgumentException("Token cannot be null or empty");
+        }
+        return extractClaim(token, Claims::getSubject);
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {

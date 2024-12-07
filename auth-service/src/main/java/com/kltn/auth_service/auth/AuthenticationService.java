@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kltn.auth_service.auth.dto.AuthenticationRequest;
 import com.kltn.auth_service.auth.dto.AuthenticationResponse;
 import com.kltn.auth_service.auth.dto.RegisterRequest;
+import com.kltn.auth_service.dto.request.IntrospectRequest;
+import com.kltn.auth_service.dto.response.IntrospectResponse;
 import com.kltn.auth_service.entity.User;
 import com.kltn.auth_service.service.JwtService;
 import com.kltn.auth_service.token.Token;
@@ -15,7 +17,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -125,5 +126,42 @@ public class AuthenticationService {
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }
         }
+    }
+
+    public IntrospectResponse verifyToken(IntrospectRequest request) {
+        IntrospectResponse introspectResponse = new IntrospectResponse(true);
+
+        try {
+            // Validate token
+            if (request.getToken() == null || request.getToken().isEmpty()) {
+                introspectResponse.setValid(false);
+                return introspectResponse; // Invalid token due to being null or empty
+            }
+
+            // Extract the username (or email) from the token
+            String username = jwtService.extractUsername(request.getToken());
+
+            if (username == null) {
+                introspectResponse.setValid(false);
+                return introspectResponse; // Invalid token
+            }
+
+            // Retrieve the user from the database
+            var user = userRepository.findByEmail(username).orElse(null);
+            if (user == null) {
+                introspectResponse.setValid(false);
+                return introspectResponse; // User doesn't exist
+            }
+
+            // Check if the token is valid for the user
+            introspectResponse.setValid(jwtService.isTokenValid(request.getToken(), user));
+
+        } catch (Exception ex) {
+            // Log the exception for debugging
+//            log.error("Error during token verification: {}", ex.getMessage());
+            introspectResponse.setValid(false); // Mark as invalid in case of error
+        }
+
+        return introspectResponse;
     }
 }

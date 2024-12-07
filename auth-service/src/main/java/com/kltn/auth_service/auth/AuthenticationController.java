@@ -3,6 +3,8 @@ package com.kltn.auth_service.auth;
 import com.kltn.auth_service.auth.dto.AuthenticationRequest;
 import com.kltn.auth_service.auth.dto.AuthenticationResponse;
 import com.kltn.auth_service.auth.dto.RegisterRequest;
+import com.kltn.auth_service.dto.request.IntrospectRequest;
+import com.kltn.auth_service.dto.response.IntrospectResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +42,11 @@ public class AuthenticationController {
             HttpServletResponse response
     ) throws IOException {
         service.refreshToken(request, response);
+    }
+
+    @PostMapping("/introspect")
+    public ResponseEntity<?> introspect(@RequestBody IntrospectRequest request) {
+        return ResponseEntity.ok(service.verifyToken(request));
     }
 
     @ExceptionHandler({ SQLException.class })
