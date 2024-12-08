@@ -10,8 +10,10 @@ import com.kltn.order_service.component.orderItem.dto.request.CreateOrderItemReq
 import com.kltn.order_service.component.orderItem.dto.request.OrderItemRequest;
 import com.kltn.order_service.component.orderItem.dto.response.OrderItemResponse;
 import com.kltn.order_service.component.orderItem.mapper.OrderItemMapper;
+import com.kltn.order_service.dto.CouponDTO;
 import com.kltn.order_service.dto.ProductDTO;
 import com.kltn.order_service.dto.UserDTO;
+import com.kltn.order_service.repository.CouponClient;
 import com.kltn.order_service.repository.ProductClient;
 import com.kltn.order_service.repository.UserClient;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,7 @@ public class OrderService {
 
     private final UserClient userClient;
     private final ProductClient productClient;
+    private final CouponClient couponClient;
 
     public OrderResponse create(OrderRequest request) {
         UserDTO userDTO = userClient.getUserById(request.getUserId());
@@ -69,12 +72,29 @@ public class OrderService {
                     ));
                 });
 
+
+        BigDecimal discount = BigDecimal.ZERO;
         try {
             UserDTO userDTO = userClient.getUserById(request.getUserId());
             orderResponse.setUser(userDTO);
         } catch (Exception e) {
             throw new RuntimeException("Failed to fetch user details", e);
         }
+
+        if (!request.getCouponId().isEmpty()) {
+            try {
+                CouponDTO couponDTO = couponClient.getById(request.getCouponId());
+                orderResponse.setCoupon(couponDTO);
+
+                if (couponDTO.getDiscount() != null) {
+                    discount = totalAmount.get().multiply(couponDTO.getDiscount().divide(BigDecimal.valueOf(100)));
+                    totalAmount.set(totalAmount.get().subtract(discount));
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to fetch coupon details", e);
+            }
+        }
+
         orderResponse.setOrderItemList(orderItemResponsesList);
         orderResponse.setTotalAmount(totalAmount.get());
 

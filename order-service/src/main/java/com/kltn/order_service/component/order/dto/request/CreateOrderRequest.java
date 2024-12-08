@@ -14,6 +14,7 @@ import java.util.List;
 @Builder
 public class CreateOrderRequest {
     private String userId;
+    private String couponId;
     private String orderDate;
     private List<CreateOrderItemRequest> orderItemList;
 }

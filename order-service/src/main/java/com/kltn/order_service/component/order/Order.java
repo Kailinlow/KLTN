@@ -28,6 +28,8 @@ public class Order {
 
     private String userId;
 
+    private String couponId;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItemList;
 }

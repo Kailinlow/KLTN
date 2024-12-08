@@ -1,6 +1,7 @@
 package com.kltn.order_service.component.order.dto.response;
 
 import com.kltn.order_service.component.orderItem.dto.response.OrderItemResponse;
+import com.kltn.order_service.dto.CouponDTO;
 import com.kltn.order_service.dto.UserDTO;
 import lombok.*;
 
@@ -23,6 +24,8 @@ public class OrderResponse {
     private String status;
 
     private UserDTO user;
+
+    private CouponDTO coupon;
 
     private List<OrderItemResponse> orderItemList;
 }
