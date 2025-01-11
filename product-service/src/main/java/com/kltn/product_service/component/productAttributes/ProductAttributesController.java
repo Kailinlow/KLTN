@@ -17,7 +17,7 @@ public class ProductAttributesController {
         return ResponseEntity.ok(service.create(request));
     }
 
-    @GetMapping
+    @GetMapping("/full")
     public ResponseEntity<?> findAll() {
         return ResponseEntity.ok(service.findAll());
     }

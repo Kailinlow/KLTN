@@ -21,15 +21,25 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component
-@Slf4j
 @RequiredArgsConstructor
+@Slf4j
 public class AuthenticationFilter implements GlobalFilter, Ordered {
     private final AuthenticateService authenticateService;
 
     private String[] publicEndpoints = {
-            "/auth/api/v1/auth/.*",
+            "/api/v1/auth/.*",
+            "/auth/.*",
             "/auth/users/registration",
-            "/product/products"
+            "/product/products/.*",
+            "/product/category/.*",
+            "/product/brand/.*",
+            "product/productAttributes/.*",
+            "/promotion/.*",
+            "product/categoryItem/.*",
+            "/product/products",
+            "/product/category",
+            "/order/payment/vn-pay",
+            "/order/payment/vn-pay-callback"
     };
 
     @Value("${app.api-prefix}")
@@ -49,10 +59,8 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         }
 
         String token = authHeader.get(0).replace("Bearer ", "");
-        log.info("Token: {}", token);
 
         return authenticateService.introspect(token).flatMap(introspectResponse -> {
-            log.info("isValid: {}", introspectResponse.isValid());
             if (introspectResponse.isValid())
                 return chain.filter(exchange);
             else

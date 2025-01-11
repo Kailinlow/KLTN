@@ -1,33 +1,165 @@
-version: '3.8'
-
 services:
-  spring-boot-app:
-    image: toan511/product-service
-    container_name: spring-boot-app
+  product-service:
+    image: product-service
+    container_name: product-service
     working_dir: /app
     volumes:
       - ./product-service/target/product-service-0.0.1-SNAPSHOT.jar:/app/product-service-0.0.1-SNAPSHOT.jar
     ports:
       - "8080:8080"
     environment:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/product-service
-          SPRING_DATASOURCE_USERNAME: postgres
-          SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db-product:5432/product-service
+      SPRING_DATASOURCE_US  ERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1234
     depends_on:
-      - db
+      - db-product
+      - api-gateway
+    networks:
+      - monitoring
     command: ["java", "-jar", "product-service-0.0.1-SNAPSHOT.jar"]
 
-  db:
-    image: postgres:latest
-    container_name: db
+  order-service:
+    image: order-service
+    container_name: order-service
+    working_dir: /app
+    volumes:
+      - ./order-service/target/order-service-0.0.1-SNAPSHOT.jar:/app/order-service-0.0.1-SNAPSHOT.jar
+    ports:
+      - "8000:8000"
     environment:
-          POSTGRES_DB: product-service
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: 1234
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db-order:5432/order-service
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1234
+    depends_on:
+      - db-order
+      - api-gateway
+    networks:
+      - monitoring
+    command: ["java", "-jar", "order-service-0.0.1-SNAPSHOT.jar"]
+
+  promotion-service:
+    image: promotion-service
+    container_name: promotion-service
+    working_dir: /app
+    volumes:
+      - ./promotion-service/target/promotion-service-0.0.1-SNAPSHOT.jar:/app/promotion-service-0.0.1-SNAPSHOT.jar
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db-promotion:5432/promotion-service
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1234
+    depends_on:
+      - db-promotion
+      - api-gateway
+    networks:
+      - monitoring
+    command: ["java", "-jar", "promotion-service-0.0.1-SNAPSHOT.jar"]
+
+  auth-service:
+    image: auth-service
+    container_name: auth-service
+    working_dir: /app
+    volumes:
+      - ./auth-service/target/auth-service-0.0.1-SNAPSHOT.jar:/app/auth-service-0.0.1-SNAPSHOT.jar
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db-auth:5432/auth-service
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1234
+    depends_on:
+      - db-auth
+      - api-gateway
+    networks:
+      - monitoring
+    command: ["java", "-jar", "auth-service-0.0.1-SNAPSHOT.jar"]
+
+  api-gateway:
+    image: api-gateway
+    container_name: api-gateway
+    ports:
+      - "8888:8888"
+    networks:
+      - monitoring
+  #    depends_on:
+  #      - product
+  #      - auth
+
+  db-product:
+    image: postgres:latest
+    container_name: db-product
+    environment:
+      POSTGRES_DB: product-service
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5433:5432"
+    volumes:
+      - db_product_data:/var/lib/postgresql/data
+    networks:
+      - monitoring
+
+  db-order:
+    image: postgres:latest
+    container_name: db-order
+    environment:
+      POSTGRES_DB: order-service
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5434:5432"
+    volumes:
+      - db_order_data:/var/lib/postgresql/data
+    networks:
+      - monitoring
+
+  db-promotion:
+    image: postgres:latest
+    container_name: db-promotion
+    environment:
+      POSTGRES_DB: promotion-service
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5435:5432"
+    volumes:
+      - db_promotion_data:/var/lib/postgresql/data
+    networks:
+      - monitoring
+
+  db-auth:
+    image: postgres:latest
+    container_name: db-auth
+    environment:
+      POSTGRES_DB: auth-service
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
     ports:
       - "5432:5432"
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - db_auth_data:/var/lib/postgresql/data
+    networks:
+      - monitoring
+
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - monitoring
+    depends_on:
+      - product-service
+
+
+networks:
+  monitoring:
 
 volumes:
-  db_data:
+  db_product_data:
+  db_auth_data:
+  db_order_data:
+  db_promotion_data:

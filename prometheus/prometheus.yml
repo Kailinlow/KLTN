@@ -1,0 +1,17 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+
+scrape_configs:
+#  - job_name: 'promotion_service'
+#    metrics_path: '/actuator/prometheus'
+#    static_configs:
+#      - targets: ['promotion-service:8082']
+
+
+  - job_name: 'product_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['product-service:8080']
+        labels:
+          application: 'Product Service Application'

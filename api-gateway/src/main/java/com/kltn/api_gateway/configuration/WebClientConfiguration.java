@@ -33,7 +33,7 @@ public class WebClientConfiguration {
     CorsWebFilter corsWebFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
-        corsConfiguration.setAllowedOrigins(List.of("*")); // Địa chỉ front-end
+        corsConfiguration.setAllowedOrigins(List.of("*"));
 
         corsConfiguration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
 
